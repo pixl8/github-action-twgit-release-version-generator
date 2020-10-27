@@ -18,6 +18,7 @@ runs:
   steps:
     - run: |
         GIT_BRANCH=${GITHUB_REF##*/}
+
         if [[ $GIT_BRANCH == v* ]] ; then
           BUILD_NUMBER=`printf %07d $GITHUB_RUN_NUMBER`
           VERSION_NUMBER="${GIT_BRANCH//v}"
@@ -25,7 +26,7 @@ runs:
           VERSION_IS_STABLE=true
           VERSION_IS_SNAPSHOT=false
         elif [[ $GIT_BRANCH == release* ]] ; then
-          VERSION_NUMBER="${GIT_BRANCH//release-}""
+          VERSION_NUMBER="${GIT_BRANCH//release-}"
           VERSION_NUMBER_FULL="${VERSION_NUMBER}-SNAPSHOT${GITHUB_RUN_NUMBER}"
           VERSION_IS_STABLE=false
           VERSION_IS_SNAPSHOT=true
@@ -35,6 +36,15 @@ runs:
           VERSION_IS_STABLE=false
           VERSION_IS_SNAPSHOT=false
         fi
+
+        echo "Setting output variables:"
+        echo "-------------------------"
+        echo "semver_release_string: ${VERSION_NUMBER_FULL}"
+        echo "semver_release_number: ${VERSION_NUMBER}"
+        echo "semver_is_stable: ${VERSION_IS_STABLE}"
+        echo "semver_is_snapshot: ${VERSION_IS_SNAPSHOT}"
+        echo "-------------------------"
+
         echo '::set-output name=semver_release_string::${VERSION_NUMBER_FULL}'
         echo '::set-output name=semver_release_number::${VERSION_NUMBER}'
         echo '::set-output name=semver_is_stable::${VERSION_IS_STABLE}'
