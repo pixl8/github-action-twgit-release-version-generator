@@ -4,6 +4,15 @@ author: Dominic Watson
 branding:
   icon: 'thumbs-up'
   color: 'white'
+outputs:
+  semver_release_string:
+    description: 'The full semver release string. e.g. 1.0.0+000598 or 2.1.0-SNAPSHOT4994.'
+  semver_release_number:
+    description: 'Just the release number part, e.g. 1.0.0 or 2.1.0'
+  semver_is_stable:
+    description: 'True or false, whether or not this release is a stable released version or an upcoming snapshot release.'
+  semver_is_snapshot:
+    description: 'True or false, whether or not this release is an upcoming snapshot release or a stable released version.'
 runs:
   using: "composite"
   steps:
@@ -12,13 +21,33 @@ runs:
 
         if [[ $GIT_BRANCH == v* ]] ; then
           BUILD_NUMBER=`printf %07d $GITHUB_RUN_NUMBER`
-          VERSION_NUMBER="${GIT_BRANCH//v}+${BUILD_NUMBER}"
+          VERSION_NUMBER="${GIT_BRANCH//v}"
+          VERSION_NUMBER_FULL="${VERSION_NUMBER}+${BUILD_NUMBER}"
+          VERSION_IS_STABLE=true
+          VERSION_IS_SNAPSHOT=false
         elif [[ $GIT_BRANCH == release* ]] ; then
-          VERSION_NUMBER="${GIT_BRANCH//release-}-SNAPSHOT${GITHUB_RUN_NUMBER}"
+          VERSION_NUMBER="${GIT_BRANCH//release-}""
+          VERSION_NUMBER_FULL="${VERSION_NUMBER}-SNAPSHOT${GITHUB_RUN_NUMBER}"
+          VERSION_IS_STABLE=false
+          VERSION_IS_SNAPSHOT=true
         else
           VERSION_NUMBER="unknown"
+          VERSION_NUMBER_FULL="unknown"
+          VERSION_IS_STABLE=false
+          VERSION_IS_SNAPSHOT=false
         fi
-        echo Setting \$RELEASE_NUMBER env variable to: ${VERSION_NUMBER}
-        echo "RELEASE_NUMBER=${VERSION_NUMBER}" >> $GITHUB_ENV
+
+        echo "Setting output variables:"
+        echo "-------------------------"
+        echo "semver_release_string: ${VERSION_NUMBER_FULL}
+        echo "semver_release_number: ${VERSION_NUMBER}
+        echo "semver_is_stable: ${VERSION_IS_STABLE}
+        echo "semver_is_snapshot: ${VERSION_IS_SNAPSHOT}
+        echo "-------------------------"
+
+        echo '::set-output name=semver_release_string::${VERSION_NUMBER_FULL}'
+        echo '::set-output name=semver_release_number::${VERSION_NUMBER}'
+        echo '::set-output name=semver_is_stable::${VERSION_IS_STABLE}'
+        echo '::set-output name=semver_is_snapshot::${VERSION_IS_SNAPSHOT}'
 
       shell: bash

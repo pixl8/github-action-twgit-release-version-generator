@@ -1,16 +1,18 @@
 # Generate semver release version in Github actions
 
-This helper **Github Action** outputs a `version_number` variable based on the git branch/tag that is building. It assumes that you are using the [twgit](https://github.com/twenga/twgit) git flow with conventions of:
+This helper **Github Action** outputs several **semantic versioning** variables based on the git branch/tag that is building. It assumes that you are using the [twgit](https://github.com/twenga/twgit) git flow with conventions of:
 
 * Released tags: `vx.x.x`
 * Upcoming releases: `release-x.x.x`
 
 _(where `x.x.x` is your release number)_
 
-The outputted version number will take the form:
+## Outputs
 
-* `1.0.0+000968` (where `1.0.0` is the **tagged release** and `968` is the Github action build number)
-* `1.0.0-SNAPSHOT968` (where `1.0.0` is the **upcoming release** and `968` is the Github action build number)
+* `semver_release_string`: The full semver release string. e.g. `1.0.0+000598` or `2.1.0-SNAPSHOT4994`.
+* `semver_release_number`: Just the release number part, e.g. `1.0.0` or `2.1.0`
+* `semver_is_stable`: `true` or `false`, whether or not this release is a stable released version or an upcoming snapshot release.
+* `semver_is_snapshot`: `true` or `false`, whether or not this release is an upcoming snapshot release or a stable released version.
 
 ## Usage in a Github actions workflow
 
@@ -33,9 +35,9 @@ jobs:
     - id: releasenumber
       uses: pixl8/github-action-twgit-release-version-generator@v1
 
-    # then can use ${{ env.RELEASE_NUMBER }} in 
+    # then can use ${{ steps.releasenumber.outputs.variable_name }} in 
     # your step env vars, e.g.
     - name: my-next-step
       env:
-        VERSION_NUMBER: ${{ env.RELEASE_NUMBER }}
+        VERSION_NUMBER: ${{ steps.releasenumber.outputs.semver_release_string }}
 ```
