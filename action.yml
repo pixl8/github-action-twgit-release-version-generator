@@ -18,6 +18,6 @@ runs:
         else
           VERSION_NUMBER="unknown"
         fi
-
-        echo "::set-output name=version_number::${VERSION_NUMBER}"
+        echo Setting release number: ${VERSION_NUMBER}
+        echo "::set-output name=release_number::${VERSION_NUMBER}"
       shell: bash
