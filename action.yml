@@ -1,0 +1,23 @@
+name: twgit-release-version-generator
+description: This is an action to generate a semver version number from a github push on a project using twgit
+author: Dominic Watson
+branding:
+  icon: 'thumbs-up'
+  color: 'white'
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        GIT_BRANCH=${GITHUB_REF##*/}
+
+        if [[ $GIT_BRANCH == v* ]] ; then
+          BUILD_NUMBER=`printf %07d $GITHUB_RUN_NUMBER`
+          VERSION_NUMBER="${GIT_BRANCH//v}+${BUILD_NUMBER}"
+        elif [[ $GIT_BRANCH == release* ]] ; then
+          VERSION_NUMBER="${GIT_BRANCH//release-}-SNAPSHOT${GITHUB_RUN_NUMBER}"
+        else
+          VERSION_NUMBER="unknown"
+        fi
+
+        echo "::set-output name=version_number::${VERSION_NUMBER}"
+      shell: bash
