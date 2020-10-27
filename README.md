@@ -33,9 +33,9 @@ jobs:
     - id: releasenumber
       uses: pixl8/github-action-twgit-release-version-generator@v1
 
-    # then can use ${{ steps.releasenumber.outputs.release_number }} in 
-    # steps your env vars, e.g.
+    # then can use ${{ env.RELEASE_NUMBER }} in 
+    # your step env vars, e.g.
     - name: my-next-step
       env:
-        version_number: ${{ steps.releasenumber.outputs.release_number }}
+        VERSION_NUMBER: ${{ env.RELEASE_NUMBER }}
 ```

@@ -18,6 +18,7 @@ runs:
         else
           VERSION_NUMBER="unknown"
         fi
-        echo Setting release number: ${VERSION_NUMBER}
-        echo "::set-output name=release_number::${VERSION_NUMBER}"
+        echo Setting \$RELEASE_NUMBER env variable to: ${VERSION_NUMBER}
+        echo "RELEASE_NUMBER=${VERSION_NUMBER}" >> $GITHUB_ENV
+
       shell: bash
