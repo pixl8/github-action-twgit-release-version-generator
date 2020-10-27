@@ -37,13 +37,13 @@ runs:
           VERSION_IS_SNAPSHOT=false
         fi
 
-        echo "Setting output variables:"
-        echo "-------------------------"
-        echo "semver_release_string: ${VERSION_NUMBER_FULL}"
-        echo "semver_release_number: ${VERSION_NUMBER}"
-        echo "semver_is_stable: ${VERSION_IS_STABLE}"
-        echo "semver_is_snapshot: ${VERSION_IS_SNAPSHOT}"
-        echo "-------------------------"
+        echo "Setting output variables"
+        echo "------------------------"
+        echo "semver_release_string = ${VERSION_NUMBER_FULL}"
+        echo "semver_release_number = ${VERSION_NUMBER}"
+        echo "semver_is_stable = ${VERSION_IS_STABLE}"
+        echo "semver_is_snapshot = ${VERSION_IS_SNAPSHOT}"
+        echo "------------------------"
 
         echo '::set-output name=semver_release_string::${VERSION_NUMBER_FULL}'
         echo '::set-output name=semver_release_number::${VERSION_NUMBER}'
