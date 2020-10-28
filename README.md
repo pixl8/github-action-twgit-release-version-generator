@@ -7,6 +7,10 @@ This helper **Github Action** outputs several **semantic versioning** variables 
 
 _(where `x.x.x` is your release number)_
 
+## Inputs
+
+* `build_number_start`: Allows you to bump the Github build number by some predermined value - useful for migrating from another build system and wanting to resume from where you left off (or higher). Not required, defaults to `0`
+
 ## Outputs
 
 * `semver_release_string`: The full semver release string. e.g. `1.0.0+000598` or `2.1.0-SNAPSHOT4994`.
