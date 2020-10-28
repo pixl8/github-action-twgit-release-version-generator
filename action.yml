@@ -7,12 +7,16 @@ branding:
 outputs:
   semver_release_string:
     description: 'The full semver release string. e.g. 1.0.0+000598 or 2.1.0-SNAPSHOT4994.'
+    value: ${{ steps.version-generator.outputs.semver_release_string }}
   semver_release_number:
     description: 'Just the release number part, e.g. 1.0.0 or 2.1.0'
+    value: ${{ steps.version-generator.outputs.semver_release_number }}
   semver_is_stable:
     description: 'True or false, whether or not this release is a stable released version or an upcoming snapshot release.'
+    value: ${{ steps.version-generator.outputs.semver_is_stable }}
   semver_is_snapshot:
     description: 'True or false, whether or not this release is an upcoming snapshot release or a stable released version.'
+    value: ${{ steps.version-generator.outputs.semver_is_snapshot }}
 runs:
   using: "composite"
   steps:
