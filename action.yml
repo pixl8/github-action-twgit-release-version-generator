@@ -4,6 +4,10 @@ author: Dominic Watson
 branding:
   icon: 'thumbs-up'
   color: 'white'
+inputs:
+  build_number_start:
+    description: Allows you to bump the Github build number by some predermined value
+    required: false
 outputs:
   semver_release_string:
     description: 'The full semver release string. e.g. 1.0.0+000598 or 2.1.0-SNAPSHOT4994.'
@@ -23,16 +27,23 @@ runs:
     - id: version-generator
       run: |
         GIT_BRANCH=${GITHUB_REF##*/}
+        BUILD_START=${INPUT_BUILD_NUMBER_START:-0}
+        BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + $BUILD_START ))
 
         if [[ $GIT_BRANCH == v* ]] ; then
-          BUILD_NUMBER=`printf %07d $GITHUB_RUN_NUMBER`
+          BUILD_NUMBER=`printf %07d $BUILD_NUMBER`
           VERSION_NUMBER="${GIT_BRANCH//v}"
           VERSION_NUMBER_FULL="${VERSION_NUMBER}+${BUILD_NUMBER}"
           VERSION_IS_STABLE=true
           VERSION_IS_SNAPSHOT=false
         elif [[ $GIT_BRANCH == release* ]] ; then
           VERSION_NUMBER="${GIT_BRANCH//release-}"
-          VERSION_NUMBER_FULL="${VERSION_NUMBER}-SNAPSHOT${GITHUB_RUN_NUMBER}"
+          VERSION_NUMBER_FULL="${VERSION_NUMBER}-SNAPSHOT${BUILD_NUMBER}"
+          VERSION_IS_STABLE=false
+          VERSION_IS_SNAPSHOT=true
+        elif [[ $GIT_BRANCH == feature* ]] ; then
+          VERSION_NUMBER=$GIT_BRANCH
+          VERSION_NUMBER_FULL=$GIT_BRANCH
           VERSION_IS_STABLE=false
           VERSION_IS_SNAPSHOT=true
         else
