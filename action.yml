@@ -33,6 +33,8 @@ runs:
         BUILD_START=${INPUT_BUILD_NUMBER_START:-0}
         BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + $BUILD_START ))
 
+        echo "Using build number start: ${BUILD_NUMBER}"
+
         if [[ $GIT_BRANCH == v* ]] ; then
           BUILD_NUMBER=`printf %07d $BUILD_NUMBER`
           VERSION_NUMBER="${GIT_BRANCH//v}"
@@ -46,7 +48,7 @@ runs:
           VERSION_IS_SNAPSHOT=true
         elif [[ $GIT_BRANCH == demo* ]] ; then
           VERSION_NUMBER="0.0.0"
-          VERSION_NUMBER_FULL="${VERSION_NUMBER}-${GIT_BRANCH}${BUILD_NUMBER}"
+          VERSION_NUMBER_FULL="${VERSION_NUMBER}-DEMO-${GIT_BRANCH//demo-}+${BUILD_NUMBER}"
           VERSION_IS_STABLE=false
           VERSION_IS_SNAPSHOT=true
         else
