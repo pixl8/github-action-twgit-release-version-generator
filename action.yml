@@ -28,12 +28,13 @@ runs:
   using: "composite"
   steps:
     - id: version-generator
+      env:
+        BUILD_NUMBER_START: ${{ inputs.build_number_start }}
       run: |
         GIT_BRANCH=${GITHUB_REF##*/}
-        BUILD_START=${INPUT_BUILD_NUMBER_START:-0}
-        BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + $BUILD_START ))
+        BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + ${BUILD_NUMBER_START:-0} ))
 
-        echo "Using build number start: ${BUILD_NUMBER}"
+        echo "Using build number start: ${BUILD_NUMBER_START:-0}"
 
         if [[ $GIT_BRANCH == v* ]] ; then
           BUILD_NUMBER=`printf %07d $BUILD_NUMBER`
