@@ -41,7 +41,7 @@ runs:
           VERSION_NUMBER_FULL="${VERSION_NUMBER}-SNAPSHOT${BUILD_NUMBER}"
           VERSION_IS_STABLE=false
           VERSION_IS_SNAPSHOT=true
-        elif [[ $GIT_BRANCH == feature* ]] ; then
+        elif [[ $GIT_BRANCH == demo* ]] ; then
           VERSION_NUMBER=$GIT_BRANCH
           VERSION_NUMBER_FULL=$GIT_BRANCH
           VERSION_IS_STABLE=false
