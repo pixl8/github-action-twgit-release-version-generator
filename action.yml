@@ -10,7 +10,7 @@ inputs:
     required: false
 outputs:
   semver_release_string:
-    description: 'The full semver release string. e.g. 1.0.0+000598 or 2.1.0-SNAPSHOT4994.'
+    description: 'The full semver release string. e.g. 1.0.0+000598 or 2.1.0-SNAPSHOT004994.'
     value: ${{ steps.version-generator.outputs.semver_release_string }}
   semver_release_number:
     description: 'Just the release number part, e.g. 1.0.0 or 2.1.0'
@@ -33,11 +33,11 @@ runs:
       run: |
         GIT_BRANCH=${GITHUB_REF##*/}
         BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + ${BUILD_NUMBER_START:-0} ))
+        BUILD_NUMBER=`printf %07d $BUILD_NUMBER`
 
         echo "Using build number start: ${BUILD_NUMBER_START:-0}"
 
         if [[ $GIT_BRANCH == v* ]] ; then
-          BUILD_NUMBER=`printf %07d $BUILD_NUMBER`
           VERSION_NUMBER="${GIT_BRANCH//v}"
           VERSION_NUMBER_FULL="${VERSION_NUMBER}+${BUILD_NUMBER}"
           VERSION_IS_STABLE=true
