@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - id: releasenumber
-      uses: pixl8/github-action-twgit-release-version-generator@v1
+      uses: pixl8/github-action-twgit-release-version-generator@v2
       with:
         build_number_start: 5609
 
