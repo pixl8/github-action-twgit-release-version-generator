@@ -68,10 +68,10 @@ runs:
         echo "semver_is_snapshot: ${VERSION_IS_SNAPSHOT}"
         echo "-------------------------"
 
-        echo "semver_release_string=$VERSION_NUMBER_FULL" >> $GITHUB_STATE
-        echo "semver_release_number=$VERSION_NUMBER" >> $GITHUB_STATE
-        echo "semver_build_number=$BUILD_NUMBER" >> $GITHUB_STATE
-        echo "semver_is_stable=$VERSION_IS_STABLE" >> $GITHUB_STATE
-        echo "semver_is_snapshot=$VERSION_IS_SNAPSHOT" >> $GITHUB_STATE
+        echo "semver_release_string=$VERSION_NUMBER_FULL" >> $GITHUB_OUTPUT
+        echo "semver_release_number=$VERSION_NUMBER" >> $GITHUB_OUTPUT
+        echo "semver_build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+        echo "semver_is_stable=$VERSION_IS_STABLE" >> $GITHUB_OUTPUT
+        echo "semver_is_snapshot=$VERSION_IS_SNAPSHOT" >> $GITHUB_OUTPUT
 
       shell: bash
